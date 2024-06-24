@@ -1,14 +1,14 @@
 resource "aws_internet_gateway" "vpc_igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "rd-igw"
+    Name = "escogram-igw"
   }
 }
 
 resource "aws_subnet" "public_a" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "ap-southeast-1a"
+  availability_zone = "eu-north-1a"
 
   tags = {
     Name = "public-subnet-a"
@@ -18,7 +18,7 @@ resource "aws_subnet" "public_a" {
 resource "aws_subnet" "public_b" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "ap-southeast-1b"
+  availability_zone = "eu-north-1b"
 
   tags = {
     Name = "public-subnet-b"

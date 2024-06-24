@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = "rd-bucket-sanju-test"
+  bucket = "escogram-bucket-production"
 }
 
 resource "aws_s3_bucket_public_access_block" "bucket_access" {
