@@ -41,12 +41,18 @@ resource "aws_nat_gateway" "public_ngw_a" {
   allocation_id = aws_eip.eip_a.id
   subnet_id     = aws_subnet.public_a.id
   depends_on    = [aws_eip.eip_a]
+  tags = {
+    Name = "ngw-a"
+  }
 }
 
 resource "aws_nat_gateway" "public_ngw_b" {
   allocation_id = aws_eip.eip_b.id
   subnet_id     = aws_subnet.public_b.id
   depends_on    = [aws_eip.eip_b]
+  tags = {
+    Name = "ngw-b"
+  }
 }
 
 resource "aws_route_table" "public_rt_a" {

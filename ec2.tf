@@ -4,6 +4,7 @@ resource "aws_instance" "server_a" {
   subnet_id                   = aws_subnet.public_a.id
   associate_public_ip_address = true
   security_groups             = [aws_security_group.public_sg.id]
+  key_name                    = "my-server-keys"
   user_data                   = file("scripts/setup-nginx.sh")
   tags = {
     Name = "server-a"
@@ -16,6 +17,7 @@ resource "aws_instance" "server_b" {
   subnet_id                   = aws_subnet.public_b.id
   associate_public_ip_address = true
   security_groups             = [aws_security_group.public_sg.id]
+  key_name                    = "my-server-keys"
   user_data                   = file("scripts/setup-nginx.sh")
   tags = {
     Name = "server-b"

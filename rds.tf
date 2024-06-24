@@ -27,7 +27,7 @@ resource "aws_db_parameter_group" "log_db_parameter" {
 }
 
 
-resource "aws_db_instance" "db1" {
+resource "aws_db_instance" "main_db" {
   username                = "kavindusanjula"
   skip_final_snapshot     = true
   publicly_accessible     = false
@@ -35,15 +35,17 @@ resource "aws_db_instance" "db1" {
   parameter_group_name    = aws_db_parameter_group.log_db_parameter.name
   instance_class          = "db.t3.micro"
   engine_version          = "16.1"
-  db_name                 = "rd-db"
+  db_name                 = "ravana_db"
   engine                  = "postgres"
   db_subnet_group_name    = aws_db_subnet_group.default.name
   backup_retention_period = 1
-  allocated_storage       = 20
+  allocated_storage       = 10
   multi_az                = true
+  storage_type            = "gp2"
 
   tags = {
     env = "Dev"
+    Name = "main-db"
   }
 
   vpc_security_group_ids = [
