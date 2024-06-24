@@ -1,7 +1,7 @@
 
 
 resource "aws_lb" "main_lb" {
-  name               = "rd-alb"
+  name               = "escogram-alb"
   internal           = false
   load_balancer_type = "application"
   ip_address_type    = "ipv4"
@@ -11,12 +11,12 @@ resource "aws_lb" "main_lb" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "rd-alb"
+    Name = "escogram-alb"
   }
 }
 
 resource "aws_lb_target_group" "alb_tg" {
-  name        = "alt-tg"
+  name        = "alb-tg"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
@@ -32,7 +32,7 @@ resource "aws_lb_target_group" "alb_tg" {
   }
 
   tags = {
-    Name = "alt-tg"
+    Name = "alb-tg"
   }
 }
 
@@ -53,8 +53,8 @@ resource "aws_lb_target_group_attachment" "attachment_a" {
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "attachment_b" {
-  target_group_arn = aws_lb_target_group.alb_tg.arn
-  target_id        = aws_instance.server_b.id
-  port             = 80
-}
+# resource "aws_lb_target_group_attachment" "attachment_b" {
+#   target_group_arn = aws_lb_target_group.alb_tg.arn
+#   target_id        = aws_instance.server_b.id
+#   port             = 80
+# }

@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "default" {
   ]
 
   tags = {
-    env = "Dev"
+    env = "Production"
   }
 }
 
@@ -22,21 +22,21 @@ resource "aws_db_parameter_group" "log_db_parameter" {
   }
 
   tags = {
-    env = "Dev"
+    env = "Production"
   }
 }
 
 
 resource "aws_db_instance" "main_db" {
-  identifier              = "rd-db-instance"
-  username                = "kavindusanjula"
+  identifier              = "escogram-db-instance"
+  username                = "escortnearyou"
   skip_final_snapshot     = true
   publicly_accessible     = false
   password                = var.db_password
   parameter_group_name    = aws_db_parameter_group.log_db_parameter.name
-  instance_class          = "db.t3.micro"
-  engine_version          = "16.1"
-  db_name                 = "ravana_db"
+  instance_class          = "db.m5d.large"
+  engine_version          = "16.3"
+  db_name                 = "escogram_db"
   engine                  = "postgres"
   db_subnet_group_name    = aws_db_subnet_group.default.name
   backup_retention_period = 1
@@ -45,8 +45,8 @@ resource "aws_db_instance" "main_db" {
   storage_type            = "gp2"
 
   tags = {
-    env  = "Dev"
-    Name = "main-db"
+    env  = "Production"
+    Name = "escogram-db"
   }
 
   vpc_security_group_ids = [
@@ -99,4 +99,3 @@ resource "aws_vpc_security_group_egress_rule" "allow_tls_eg" {
 #     aws_security_group.sg.id,
 #   ]
 # }
-
