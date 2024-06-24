@@ -28,6 +28,7 @@ resource "aws_db_parameter_group" "log_db_parameter" {
 
 
 resource "aws_db_instance" "main_db" {
+  identifier              = "rd-db-instance"
   username                = "kavindusanjula"
   skip_final_snapshot     = true
   publicly_accessible     = false
@@ -44,7 +45,7 @@ resource "aws_db_instance" "main_db" {
   storage_type            = "gp2"
 
   tags = {
-    env = "Dev"
+    env  = "Dev"
     Name = "main-db"
   }
 
