@@ -28,18 +28,18 @@ resource "aws_db_parameter_group" "log_db_parameter" {
 
 
 resource "aws_db_instance" "db1" {
-  username                = "amonkincloud"
+  username                = "kavindusanjula"
   skip_final_snapshot     = true
   publicly_accessible     = false
   password                = var.db_password
   parameter_group_name    = aws_db_parameter_group.log_db_parameter.name
-  instance_class          = var.instance_class
+  instance_class          = "db.t3.micro"
   engine_version          = "16.1"
-  db_name                 = "amc"
+  db_name                 = "rd-db"
   engine                  = "postgres"
   db_subnet_group_name    = aws_db_subnet_group.default.name
   backup_retention_period = 1
-  allocated_storage       = 50
+  allocated_storage       = 20
   multi_az                = true
 
   tags = {
@@ -54,7 +54,7 @@ resource "aws_db_instance" "db1" {
 resource "aws_security_group" "sg" {
   name        = "db_sg"
   description = "Default sg for the database"
-  vpc_id      = aws_vpc.amc-vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   tags = {
     Name = "db_sg"
@@ -62,38 +62,38 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.sg.id
-  referenced_security_group_id        = aws_security_group.ec2_sg.id
-  from_port                = 5432
-  ip_protocol              = "tcp"
-  to_port                  = 5432
+  security_group_id            = aws_security_group.sg.id
+  referenced_security_group_id = aws_security_group.public_sg.id
+  from_port                    = 5432
+  ip_protocol                  = "tcp"
+  to_port                      = 5432
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_tls_eg" {
-  security_group_id = aws_security_group.ec2_sg.id
-  referenced_security_group_id        = aws_security_group.ec2_sg.id
-  from_port   = 0
-  ip_protocol = "tcp"
-  to_port     = 65535
+  security_group_id            = aws_security_group.public_sg.id
+  referenced_security_group_id = aws_security_group.public_sg.id
+  from_port                    = 0
+  ip_protocol                  = "tcp"
+  to_port                      = 65535
 }
 
-resource "aws_db_instance" "db_replica" {
-  skip_final_snapshot     = true
-  replicate_source_db     = aws_db_instance.db1.identifier
-  publicly_accessible     = false
-  parameter_group_name    = aws_db_parameter_group.log_db_parameter.name
-  instance_class          = var.instance_class
-  identifier              = "db-replica"
-  backup_retention_period = 7
-  apply_immediately       = true
+# resource "aws_db_instance" "db_replica" {
+#   skip_final_snapshot     = true
+#   replicate_source_db     = aws_db_instance.db1.identifier
+#   publicly_accessible     = false
+#   parameter_group_name    = aws_db_parameter_group.log_db_parameter.name
+#   instance_class          = var.instance_class
+#   identifier              = "db-replica"
+#   backup_retention_period = 7
+#   apply_immediately       = true
 
-  tags = {
-    replica = "true"
-    env     = "Dev"
-  }
+#   tags = {
+#     replica = "true"
+#     env     = "Dev"
+#   }
 
-  vpc_security_group_ids = [
-    aws_security_group.sg.id,
-  ]
-}
+#   vpc_security_group_ids = [
+#     aws_security_group.sg.id,
+#   ]
+# }
 
